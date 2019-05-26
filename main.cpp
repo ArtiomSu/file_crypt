@@ -16,7 +16,8 @@
 #include <string>
 #include <iostream>
 #include "utils.hpp"
-
+#include "File_manager.hpp"
+#include <vector>
 
 int main(int argc, char** argv) {
     
@@ -119,24 +120,53 @@ int main(int argc, char** argv) {
     catch(...) {
         std::cerr << "Exception of unknown type!\n";
     }
-    
+    //##########################################################################################################
+    //##########################################################################################################
+    /*uncomment later
     pass = utils::getPass();
     if(pass == ""){
         std::cout << "weak password please use 12 characters, lower case, upper case, numbers and symbols like qQ1\"zxcvbvcb" << std::endl;
         return 2;
     }
-            
-            
+      */      
+    pass = "SecureP@!£$%w023dlol";        
     
     std::cout << std::endl << packup << std::endl;
     std::cout << delete_files << std::endl;
     std::cout << mode << std::endl;
     std::cout << pass << std::endl;
     std::cout << output_folder << std::endl;
-    std::cout << files_list_path << std::endl;
+    std::cout << files_list_path << std::endl; 
     
+    //check if output exists
+    int status = File_manager::check_file(output_folder);
+    if(status == 1){
+        // if it is a dirrectory then its ok
+        std::cout << "output folder is ok" << std::endl;
+    }else {
+        // create dir
+        int result = File_manager::create_dir(output_folder);
+        if(result == 1){
+            std::cout << "output directory created" << std::endl;
+        } 
+        else if(result == 2){// failed to create
+            std::cout << "failed to create output directory check file permissions" << std::endl;
+            return 3;
+        }
+    }
+    
+    std::vector<std::string> files;
     //next need to read files list and check if files exist
+    int result = File_manager::check_list(files_list_path, &files);
+
+    if(result != 1){
+        std::cout << "file list for encryption is incorrect" << std::endl;
+        return 4;
+    }
     
+    for(int i = 0; i < files.size() ; i++){
+        std::cout << files.at(i) << std::endl;
+    }
     
     return 0;
 }

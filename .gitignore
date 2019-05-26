@@ -1,3 +1,7 @@
 file_crypt
 Makefile  
 nbproject/
+/build/
+input_files/
+list
+.dep.inc
